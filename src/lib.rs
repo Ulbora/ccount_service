@@ -3,6 +3,7 @@ extern crate diesel;
 extern crate dotenv;
 
 pub mod categorydb;
+pub mod fooddb;
 pub mod models;
 pub mod schema;
 pub mod userdb;
@@ -11,7 +12,7 @@ use diesel::prelude::*;
 use dotenv::dotenv;
 use std::env;
 
-use self::models::{Category, DailyCalories, Food, NewCategory, User};
+use self::models::{Category, DailyCalories, Food, NewCategory, NewFood, User};
 
 pub fn establish_connection() -> MysqlConnection {
     dotenv().ok();

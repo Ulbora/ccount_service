@@ -35,6 +35,14 @@ pub struct Food {
 }
 
 #[derive(Queryable, Insertable)]
+#[table_name = "food"]
+pub struct NewFood<'a> {
+    pub name: &'a str,
+    pub calories: i32,
+    pub category_id: i64,
+}
+
+#[derive(Queryable, Insertable)]
 #[table_name = "user"]
 pub struct User {
     pub email: String,

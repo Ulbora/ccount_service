@@ -19,7 +19,7 @@ pub fn create_category(conn: &MysqlConnection, name: &str) -> Category {
     diesel::insert_into(category)
         .values(&new_cat)
         .execute(conn)
-        .expect("Error saving new post");
+        .expect("Error saving new cat");
 
     category.order(id.desc()).first(conn).unwrap()
 }
@@ -44,9 +44,7 @@ pub fn update_category(conn: &MysqlConnection, cid: i64, nm: &str) -> Category {
 }
 
 pub fn get_categories(conn: &MysqlConnection) -> Vec<Category> {
-    let results = category
-        .load::<Category>(conn)
-        .expect("Error loading posts");
+    let results = category.load::<Category>(conn).expect("Error loading cats");
     results
 }
 
@@ -54,7 +52,7 @@ pub fn delete_category(conn: &MysqlConnection, cid: i64) -> Result<usize, Box<dy
     use crate::diesel::query_dsl::filter_dsl::FilterDsl;
     let num_deleted = diesel::delete(category.filter(id.eq(cid)))
         .execute(conn)
-        .expect("Error deleting posts");
+        .expect("Error deleting cat");
 
     //println!("Deleted {} posts", num_deleted);
     Ok(num_deleted)

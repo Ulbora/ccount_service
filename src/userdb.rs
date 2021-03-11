@@ -21,7 +21,7 @@ pub fn create_user(conn: &MysqlConnection, eemail: &str, password: &str) -> User
     diesel::insert_into(user)
         .values(&new_user)
         .execute(conn)
-        .expect("Error saving new post");
+        .expect("Error saving new user");
 
     let email = String::from(eemail);
     let password = String::from("");
@@ -61,7 +61,7 @@ pub fn delete_user(conn: &MysqlConnection, eemail: &str) -> Result<usize, Box<dy
     use schema::user::dsl::email;
     let num_deleted = diesel::delete(user.filter(email.eq(eemail)))
         .execute(conn)
-        .expect("Error deleting posts");
+        .expect("Error deleting user");
 
     //println!("Deleted {} posts", num_deleted);
     Ok(num_deleted)
