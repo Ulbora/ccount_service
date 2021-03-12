@@ -1,10 +1,10 @@
-use ccount_service::categorydb::create_category;
-use ccount_service::categorydb::delete_category;
+use ccount_service::category_db::create_category;
+use ccount_service::category_db::delete_category;
 use ccount_service::establish_connection;
-use ccount_service::fooddb::create_food;
-use ccount_service::fooddb::delete_food;
-use ccount_service::fooddb::get_food_by_category;
-use ccount_service::fooddb::update_food;
+use ccount_service::food_db::create_food;
+use ccount_service::food_db::delete_food;
+use ccount_service::food_db::get_food_by_category;
+use ccount_service::food_db::update_food;
 
 // #[cfg(test)]
 mod tests {

@@ -1,8 +1,8 @@
-use ccount_service::categorydb::create_category;
+use ccount_service::category_db::create_category;
 //use ccount_service::create_user;
-use ccount_service::categorydb::delete_category;
-use ccount_service::categorydb::get_categories;
-use ccount_service::categorydb::update_category;
+use ccount_service::category_db::delete_category;
+use ccount_service::category_db::get_categories;
+use ccount_service::category_db::update_category;
 use ccount_service::establish_connection;
 
 // #[cfg(test)]
