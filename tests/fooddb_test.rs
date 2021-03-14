@@ -3,6 +3,7 @@ use ccount_service::database::category_db::delete_category;
 use ccount_service::database::food_db::create_food;
 use ccount_service::database::food_db::delete_food;
 use ccount_service::database::food_db::get_food_by_category;
+use ccount_service::database::food_db::get_food_by_id;
 use ccount_service::database::food_db::update_food;
 use ccount_service::establish_connection;
 
@@ -37,6 +38,9 @@ mod tests {
         let user_slice: &str = &*user.email;
         let fds = get_food_by_category(&ncon, ncat.id, user_slice);
         assert!(fds.len() == 2);
+
+        let ff = get_food_by_id(&ncon, nfd.id);
+        assert!(ff.id == nfd.id);
 
         let cnt = delete_food(&ncon, nfd.id);
         assert!(cnt.unwrap() == 1);

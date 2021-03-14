@@ -3,7 +3,9 @@ extern crate diesel;
 extern crate dotenv;
 
 pub mod category;
+pub mod daily_calories;
 pub mod database;
+pub mod food;
 pub mod models;
 pub mod schema;
 pub mod user;
