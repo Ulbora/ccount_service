@@ -1,12 +1,12 @@
-use ccount_service::category_db::create_category;
-use ccount_service::category_db::delete_category;
-use ccount_service::daily_calory_db::create_daily_calories;
-use ccount_service::daily_calory_db::delete_daily_calories;
-use ccount_service::daily_calory_db::get_daily_calories;
+use ccount_service::database::category_db::create_category;
+use ccount_service::database::category_db::delete_category;
+use ccount_service::database::daily_calory_db::create_daily_calories;
+use ccount_service::database::daily_calory_db::delete_daily_calories;
+use ccount_service::database::daily_calory_db::get_daily_calories;
+use ccount_service::database::food_db::create_food;
+use ccount_service::database::user_db::create_user;
+use ccount_service::database::user_db::delete_user;
 use ccount_service::establish_connection;
-use ccount_service::food_db::create_food;
-use ccount_service::user_db::create_user;
-use ccount_service::user_db::delete_user;
 
 //use ccount_service::food_db::delete_food;
 //use ccount_service::food_db::get_food_by_category;

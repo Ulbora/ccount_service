@@ -1,9 +1,9 @@
 //use ccount_service::establish_connection;
+use ccount_service::database::user_db::delete_user;
 use ccount_service::establish_pooled_connection;
 use ccount_service::user::add_new_user;
 use ccount_service::user::change_password;
 use ccount_service::user::login_user;
-use ccount_service::user_db::delete_user;
 
 mod tests {
     use super::*;

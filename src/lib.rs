@@ -3,15 +3,11 @@ extern crate diesel;
 extern crate dotenv;
 
 pub mod category;
-pub mod category_db;
-pub mod daily_calory_db;
-pub mod food_db;
+pub mod database;
 pub mod models;
 pub mod schema;
 pub mod user;
-pub mod user_db;
 
-//use diesel::pg::PgConnection;
 use diesel::prelude::*;
 use diesel::r2d2;
 use diesel::r2d2::{ConnectionManager, Pool, PoolError, PooledConnection};

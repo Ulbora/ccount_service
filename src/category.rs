@@ -1,7 +1,7 @@
-use crate::category_db::create_category;
-use crate::category_db::delete_category;
-use crate::category_db::get_categories;
-use crate::category_db::update_category;
+use crate::database::category_db::create_category;
+use crate::database::category_db::delete_category;
+use crate::database::category_db::get_categories;
+use crate::database::category_db::update_category;
 use std::error::Error;
 
 use crate::MysqlConnection;

@@ -1,8 +1,8 @@
+use ccount_service::database::user_db::create_user;
+use ccount_service::database::user_db::delete_user;
+use ccount_service::database::user_db::get_user;
+use ccount_service::database::user_db::update_user;
 use ccount_service::establish_connection;
-use ccount_service::user_db::create_user;
-use ccount_service::user_db::delete_user;
-use ccount_service::user_db::get_user;
-use ccount_service::user_db::update_user;
 
 mod tests {
     use super::*;
