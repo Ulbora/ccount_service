@@ -19,6 +19,7 @@ table! {
         id -> Bigint,
         name -> Varchar,
         calories -> Integer,
+        user_email -> Varchar,
         category_id -> Bigint,
     }
 }
@@ -33,5 +34,6 @@ table! {
 joinable!(daily_calories -> food (food_id));
 joinable!(daily_calories -> user (user_email));
 joinable!(food -> category (category_id));
+joinable!(food -> user (user_email));
 
 allow_tables_to_appear_in_same_query!(category, daily_calories, food, user,);

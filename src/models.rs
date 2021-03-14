@@ -39,6 +39,7 @@ pub struct Food {
     pub id: i64,
     pub name: String,
     pub calories: i32,
+    pub user_email: String,
     pub category_id: i64,
 }
 
@@ -47,6 +48,7 @@ pub struct Food {
 pub struct NewFood<'a> {
     pub name: &'a str,
     pub calories: i32,
+    pub user_email: &'a str,
     pub category_id: i64,
 }
 
