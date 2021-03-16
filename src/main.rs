@@ -1,3 +1,4 @@
+use crate::routes::change_pw;
 use crate::routes::echo;
 use crate::routes::hello;
 use crate::routes::login;
@@ -25,6 +26,7 @@ async fn main() -> std::io::Result<()> {
             .service(echo)
             .service(new_user)
             .service(login)
+            .service(change_pw)
             .data(pool.clone())
             // .route("/user/new", web::get().to(new_user))
             //.service(web::resource("/user/new").route(web::post().to_async(new_user)))
