@@ -649,6 +649,7 @@ name = "ccount_service"
 version = "0.1.0"
 dependencies = [
  "actix-rt",
+ "actix-service",
  "actix-web 3.3.2",
  "actix-web-httpauth",
  "diesel",

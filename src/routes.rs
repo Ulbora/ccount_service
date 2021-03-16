@@ -45,7 +45,10 @@ struct Resp {
 async fn new_user(
     req_body: web::Json<User>,
     pool: web::Data<Pool<ConnectionManager<MysqlConnection>>>,
+    req: HttpRequest,
 ) -> impl Responder {
+    let auth = req.headers().get("authorization");
+    println!("authorization: {:?}", auth);
     let suc = add_new_user(&pool.get().unwrap(), &req_body.email, &req_body.password);
 
     let res = Resp { success: suc };
