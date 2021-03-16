@@ -13,8 +13,9 @@ mod tests {
         //let ncon = establish_connection();
         //&pool.get().unwrap()
         let ncon = establish_pooled_connection();
-        let user = add_new_user(&ncon.get().unwrap(), "tester2@test.com", "ddffghjk");
-        assert!(user.email == "tester2@test.com");
+        let suc = add_new_user(&ncon.get().unwrap(), "tester2@test.com", "ddffghjk");
+        assert!(suc == true);
+        //assert!(user.email == "tester2@test.com");
 
         let vd = login_user(&ncon.get().unwrap(), "tester2@test.com", "ddffghjk");
         assert!(vd == true);

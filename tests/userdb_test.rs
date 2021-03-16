@@ -10,8 +10,8 @@ mod tests {
     #[test]
     fn new_user() {
         let ncon = establish_connection();
-        let user = create_user(&ncon, "tester@test.com", "12345");
-        assert!(user.email == "tester@test.com");
+        let suc = create_user(&ncon, "tester@test.com", "12345");
+        assert!(suc == true);
 
         let user = update_user(&ncon, "tester@test.com", "newpw");
         assert!(user.email == "tester@test.com");

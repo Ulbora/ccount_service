@@ -18,14 +18,15 @@ mod tests {
         let cat = create_category(&ncon.get().unwrap(), "snacks");
         assert!(cat.name == "snacks");
 
-        let user = create_user(&ncon.get().unwrap(), "newinttester4@test.com", "12345");
-        assert!(user.email == "newinttester4@test.com");
+        let suc = create_user(&ncon.get().unwrap(), "newinttester4@test.com", "12345");
+        assert!(suc == true);
 
-        let user_slice: &str = &*user.email;
+        let uemail = "newinttester4@test.com";
+        let user_slice: &str = uemail;
         let fd = create_new_food(&ncon.get().unwrap(), "chips", cat.id, 254, user_slice);
         assert!(fd.name == "chips");
 
-        let user_slice: &str = &*user.email;
+        let user_slice: &str = uemail;
         let fd2 = create_new_food(
             &ncon.get().unwrap(),
             "potato chips",
@@ -35,7 +36,7 @@ mod tests {
         );
         assert!(fd2.name == "potato chips");
 
-        let user_slice: &str = &*user.email;
+        let user_slice: &str = uemail;
         let fd = update_existing_food(
             &ncon.get().unwrap(),
             fd.id,
@@ -46,7 +47,7 @@ mod tests {
         );
         assert!(fd.name == "corn chips");
 
-        let user_slice: &str = &*user.email;
+        let user_slice: &str = uemail;
         let flst = get_food_list_by_category(&ncon.get().unwrap(), cat.id, user_slice);
         assert!(flst.len() == 2);
 

@@ -19,34 +19,36 @@ mod tests {
         let cat = create_category(&ncon.get().unwrap(), "snacks");
         assert!(cat.name == "snacks");
 
-        let user = create_user(&ncon.get().unwrap(), "newinttester6@test.com", "12345");
-        assert!(user.email == "newinttester6@test.com");
+        let uemail = "newinttester6@test.com";
 
-        let user_slice: &str = &*user.email;
+        let suc = create_user(&ncon.get().unwrap(), "newinttester6@test.com", "12345");
+        assert!(suc == true);
+
+        let user_slice: &str = uemail;
         let fd = create_new_food(&ncon.get().unwrap(), "chips", cat.id, 254, user_slice);
         assert!(fd.name == "chips");
 
-        let user_slice: &str = &*user.email;
+        let user_slice: &str = uemail;
         let fd2 = create_new_food(&ncon.get().unwrap(), "pizza", cat.id, 554, user_slice);
         assert!(fd2.name == "pizza");
 
-        let user_slice: &str = &*user.email;
+        let user_slice: &str = uemail;
         let ncal = create_new_daily_calories(&ncon.get().unwrap(), "01-24-2021", user_slice, fd.id);
         assert_eq!(ncal.day, "01-24-2021");
 
-        let user_slice: &str = &*user.email;
+        let user_slice: &str = uemail;
         let ncal2 =
             create_new_daily_calories(&ncon.get().unwrap(), "01-24-2021", user_slice, fd2.id);
         assert_eq!(ncal2.day, "01-24-2021");
 
-        let user_slice: &str = &*user.email;
+        let user_slice: &str = uemail;
         let caltot = get_calories_for_day(&ncon.get().unwrap(), user_slice, "01-24-2021");
         assert_eq!(caltot, 808);
 
         let cnt2 = delete_existing_daily_calory(&ncon.get().unwrap(), ncal2.id);
         assert!(cnt2.unwrap() == 1);
 
-        let user_slice: &str = &*user.email;
+        let user_slice: &str = uemail;
         let caltot = get_calories_for_day(&ncon.get().unwrap(), user_slice, "01-24-2021");
         assert_eq!(caltot, 254);
 

@@ -22,25 +22,26 @@ mod tests {
         let ncat = create_category(&ncon, "test snacks");
         assert_ne!(ncat.id, 0);
 
-        let user = create_user(&ncon, "newinttester@test.com", "12345");
-        assert!(user.email == "newinttester@test.com");
+        let suc = create_user(&ncon, "newinttester@test.com", "12345");
+        assert!(suc == true);
 
-        let user_slice: &str = &*user.email;
+        let uemail = "newinttester@test.com";
+        let user_slice: &str = uemail;
         let nfd = create_food(&ncon, "chips", ncat.id, 254, user_slice);
         assert_eq!(nfd.name, "chips");
 
-        let user_slice: &str = &*user.email;
+        let user_slice: &str = uemail;
         let nfd2 = create_food(&ncon, "crackers", ncat.id, 354, user_slice);
         assert_eq!(nfd2.name, "crackers");
 
-        let user_slice: &str = &*user.email;
+        let user_slice: &str = uemail;
         let ncal = create_daily_calories(&ncon, "01-24-2021", user_slice, nfd.id);
         assert_eq!(ncal.day, "01-24-2021");
 
         let ncal2 = create_daily_calories(&ncon, "02-24-2021", user_slice, nfd2.id);
         assert_eq!(ncal2.day, "02-24-2021");
 
-        let user_slice: &str = &*user.email;
+        let user_slice: &str = uemail;
         let ncal3 = create_daily_calories(&ncon, "03-24-2021", user_slice, nfd.id);
         assert_eq!(ncal3.day, "03-24-2021");
 

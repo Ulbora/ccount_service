@@ -8,10 +8,10 @@ use pwhash::error::Error;
 use pwhash::unix;
 
 //use ccount_service::user_db::create_user;
-pub fn add_new_user(conn: &MysqlConnection, eemail: &str, password: &str) -> User {
+pub fn add_new_user(conn: &MysqlConnection, eemail: &str, password: &str) -> bool {
     let npw = &hash_password(password).unwrap();
-    let user = create_user(conn, eemail, npw);
-    user
+    let suc = create_user(conn, eemail, npw);
+    suc
 }
 
 pub fn login_user(conn: &MysqlConnection, eemail: &str, password: &str) -> bool {
