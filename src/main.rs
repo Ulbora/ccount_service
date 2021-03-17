@@ -1,3 +1,4 @@
+extern crate actix_cors;
 use crate::routes::change_pw;
 use crate::routes::echo;
 use crate::routes::get_cat_list;
@@ -8,9 +9,10 @@ use crate::routes::new_user;
 //use actix_web::dev::ServiceRequest;
 //use actix_web::service::ServiceRequest;
 use actix_web::Error;
-use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
+use actix_web::{get, http, post, web, App, HttpResponse, HttpServer, Responder};
 use actix_web_httpauth::extractors::basic::BasicAuth;
 
+use actix_cors::Cors;
 use actix_web_httpauth::middleware::HttpAuthentication;
 use ccount_service::establish_pooled_connection;
 
@@ -23,6 +25,17 @@ async fn main() -> std::io::Result<()> {
     HttpServer::new(move || {
         //let auth = HttpAuthentication::basic(basic_auth_validator);
         App::new()
+            .wrap(
+                Cors::default()
+                    //.allowed_origin("http://127.0.0.1:3000")
+                    //.allowed_origin("http://localhost:3000")
+                    .send_wildcard()
+                    .allowed_methods(vec!["GET", "POST", "PUT", "DELETE"])
+                    .allowed_headers(vec![http::header::AUTHORIZATION, http::header::ACCEPT])
+                    .allowed_header(http::header::CONTENT_TYPE)
+                    .allowed_header("api-key")
+                    .max_age(3600),
+            )
             .service(hello)
             .service(echo)
             .service(new_user)
