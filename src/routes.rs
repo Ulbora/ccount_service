@@ -1,4 +1,5 @@
 use actix_web::{get, post, web, App, HttpRequest, HttpResponse, HttpServer, Responder};
+use ccount_service::category::get_category_list;
 use ccount_service::user::add_new_user;
 use ccount_service::user::change_password;
 use ccount_service::user::login_user;
@@ -11,6 +12,7 @@ use serde::Serialize;
 extern crate base64;
 
 use base64::decode;
+use std::env;
 
 #[get("/")]
 async fn hello() -> impl Responder {
@@ -53,7 +55,8 @@ async fn new_user(
     req: HttpRequest,
 ) -> impl Responder {
     let mut suc = false;
-    let auth_suc = validate_auth(req, &pool.get().unwrap());
+    let auth_suc = validate_api_key(req);
+
     println!("authed: {:?}", auth_suc);
     if auth_suc {
         suc = add_new_user(&pool.get().unwrap(), &req_body.email, &req_body.password);
@@ -152,4 +155,58 @@ fn validate_auth(req: HttpRequest, conn: &MysqlConnection) -> bool {
         None => {}
     }
     rtn
+}
+
+fn validate_api_key(req: HttpRequest) -> bool {
+    let rtn = false;
+    let api_key = env::var("api-key").unwrap_or("ddjdt373dcf7dhdh222282727fffeee".to_string());
+    let key_h = req.headers().get("api-key");
+    match key_h {
+        Some(k) => {
+            let key = k.to_str().ok().unwrap();
+            if key == &api_key {
+                return true;
+            }
+        }
+        None => {}
+    }
+    rtn
+}
+
+#[derive(Serialize)]
+struct Category {
+    pub id: i64,
+    pub name: String,
+}
+
+#[get("/category/list")]
+async fn get_cat_list(
+    pool: web::Data<Pool<ConnectionManager<MysqlConnection>>>,
+    req: HttpRequest,
+) -> impl Responder {
+    let mut rtn: Vec<Category> = Vec::new();
+    // let lst = get_category_list(&pool.get().unwrap());
+    let auth_suc = validate_auth(req, &pool.get().unwrap());
+    if auth_suc {
+        let lst = get_category_list(&pool.get().unwrap());
+        for c in lst {
+            let cc = Category {
+                id: c.id,
+                name: c.name,
+            };
+            rtn.push(cc);
+        }
+    }
+
+    // let mut rtn: Vec<Category> = Vec::new(); //= std::vec::Vec<Category>.new();
+
+    if auth_suc {
+        HttpResponse::Ok()
+            .content_type("application/json")
+            .json(rtn)
+    } else {
+        HttpResponse::Unauthorized()
+            .content_type("application/json")
+            .json(rtn)
+    }
 }

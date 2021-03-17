@@ -56,8 +56,19 @@ pub fn update_user(conn: &MysqlConnection, eemail: &str, pw: &str) -> User {
 pub fn get_user(conn: &MysqlConnection, eemail: &str) -> User {
     use crate::diesel::query_dsl::filter_dsl::FilterDsl;
     use schema::user::dsl::email;
-    let data = user.filter(email.eq(eemail)).first(conn).unwrap();
-    data
+    let data = User {
+        email: (&"").to_string(),
+        password: "".to_string(),
+    };
+    let datam = user.filter(email.eq(eemail)).first(conn);
+    match datam {
+        Ok(u) => {
+            return u;
+        }
+        Err(_) => {
+            return data;
+        }
+    }
 }
 
 pub fn delete_user(conn: &MysqlConnection, eemail: &str) -> Result<usize, Box<dyn Error>> {
