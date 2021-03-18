@@ -2,11 +2,13 @@ extern crate actix_cors;
 use crate::routes::change_pw;
 use crate::routes::echo;
 use crate::routes::get_cat_list;
+use crate::routes::get_food_list_by_cat;
 use crate::routes::hello;
 use crate::routes::login;
 use crate::routes::manual_hello;
 use crate::routes::new_food;
 use crate::routes::new_user;
+use crate::routes::update_food;
 //use actix_web::dev::ServiceRequest;
 //use actix_web::service::ServiceRequest;
 use actix_web::Error;
@@ -43,6 +45,8 @@ async fn main() -> std::io::Result<()> {
             .service(change_pw)
             .service(get_cat_list)
             .service(new_food)
+            .service(update_food)
+            .service(get_food_list_by_cat)
             .data(pool.clone())
             // .route("/user/new", web::get().to(new_user))
             //.service(web::resource("/user/new").route(web::post().to_async(new_user)))

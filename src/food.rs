@@ -31,8 +31,8 @@ pub fn update_existing_food(
     fd
 }
 
-pub fn get_food_list_by_category(conn: &MysqlConnection, fid: i64, uemail: &str) -> Vec<Food> {
-    let flst = get_food_by_category(conn, fid, uemail);
+pub fn get_food_list_by_category(conn: &MysqlConnection, cid: i64, uemail: &str) -> Vec<Food> {
+    let flst = get_food_by_category(conn, cid, uemail);
     flst
 }
 

@@ -1,6 +1,8 @@
-use actix_web::{get, post, web, App, HttpRequest, HttpResponse, HttpServer, Responder};
+use actix_web::{get, post, put, web, App, HttpRequest, HttpResponse, HttpServer, Responder};
 use ccount_service::category::get_category_list;
 use ccount_service::food::create_new_food;
+use ccount_service::food::get_food_list_by_category;
+use ccount_service::food::update_existing_food;
 use ccount_service::user::add_new_user;
 use ccount_service::user::change_password;
 use ccount_service::user::login_user;
@@ -212,9 +214,10 @@ async fn get_cat_list(
     }
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 struct Food {
+    id: i64,
     name: String,
     calories: i32,
     user_email: String,
@@ -228,7 +231,7 @@ async fn new_food(
     req: HttpRequest,
 ) -> impl Responder {
     let mut suc = false;
-    let auth_suc = validate_api_key(req);
+    let auth_suc = validate_auth(req, &pool.get().unwrap());
 
     println!("authed: {:?}", auth_suc);
     if auth_suc {
@@ -256,5 +259,76 @@ async fn new_food(
         HttpResponse::Conflict()
             .content_type("application/json")
             .json(res)
+    }
+}
+
+#[put("/food/update")]
+async fn update_food(
+    req_body: web::Json<Food>,
+    pool: web::Data<Pool<ConnectionManager<MysqlConnection>>>,
+    req: HttpRequest,
+) -> impl Responder {
+    let mut suc = false;
+    let auth_suc = validate_auth(req, &pool.get().unwrap());
+
+    println!("authed: {:?}", auth_suc);
+    if auth_suc {
+        let fd = update_existing_food(
+            &pool.get().unwrap(),
+            req_body.id,
+            &req_body.name,
+            req_body.category_id,
+            req_body.calories,
+            &req_body.user_email,
+        );
+        if fd.id > 0 {
+            suc = true;
+        }
+    }
+    let res = Resp { success: suc };
+    if suc {
+        HttpResponse::Ok()
+            .content_type("application/json")
+            .json(res)
+    } else if !auth_suc {
+        HttpResponse::Unauthorized()
+            .content_type("application/json")
+            .json(res)
+    } else {
+        HttpResponse::Conflict()
+            .content_type("application/json")
+            .json(res)
+    }
+}
+
+#[get("/food/list/{cid}/{email}")]
+async fn get_food_list_by_cat(
+    pool: web::Data<Pool<ConnectionManager<MysqlConnection>>>,
+    req: HttpRequest,
+    web::Path((cid, email)): web::Path<(i64, String)>,
+) -> impl Responder {
+    let mut rtn: Vec<Food> = Vec::new();
+    let auth_suc = validate_auth(req, &pool.get().unwrap());
+    if auth_suc {
+        let lst = get_food_list_by_category(&pool.get().unwrap(), cid, &email);
+        for f in lst {
+            let ff = Food {
+                id: f.id,
+                name: f.name,
+                category_id: f.category_id,
+                calories: f.calories,
+                user_email: f.user_email,
+            };
+            rtn.push(ff);
+        }
+    }
+    if auth_suc {
+        HttpResponse::Ok()
+            .content_type("application/json")
+            .json(rtn)
+    } else {
+        HttpResponse::Unauthorized()
+            .content_type("application/json")
+            .json(rtn)
     }
 }
