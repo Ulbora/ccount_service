@@ -44,27 +44,6 @@ pub fn change_password(
     rtn
 }
 
-// pub fn hash_password(pw: &str) -> Result<String, Error> {
-//     let h = bcrypt::hash(pw);
-//     h
-// }
-
-// pub fn validate_password(pw: &str, hashpw: &str) -> bool {
-//     let rtn = unix::verify(pw, hashpw);
-//     rtn
-// }
-
-// pub fn hash_password_sha1(pw: &str) -> Result<String, Error> {
-//     let hh = "$sha1$19703$iVdJqfSE$v4qYKl1zqYThwpjJAoKX6UvlHq/a";
-//     let h = sha1_crypt::hash_with(hh, pw);
-//     h
-// }
-
-// pub fn validate_password_sha1(pw: &str, hashpw: &str) -> bool {
-//     let rtn = sha1_crypt::verify(pw, hashpw);
-//     rtn
-// }
-
 pub fn hash_password_arg(pw: &str, salt: &str) -> Result<String, argon2::Error> {
     let config = Config::default();
     let h = argon2::hash_encoded(pw.as_bytes(), salt.as_bytes(), &config);
@@ -87,45 +66,6 @@ pub fn validate_password_arg(pw: &str, hashpw: &str) -> bool {
 mod tests {
     use crate::user::hash_password_arg;
     use crate::user::validate_password_arg;
-    // #[test]
-
-    // fn hash_pw() {
-    //     let hp = hash_password("12456hhhhh");
-    //     assert!(hp.unwrap() != "");
-    // }
-
-    // #[test]
-
-    // fn hash_pw_fail() {
-    //     let hp = hash_password("");
-    //     assert!(hp.unwrap() != "");
-    // }
-
-    // #[test]
-    // fn hash_pw_sha1() {
-    //     let hp = hash_password_sha1("test");
-    //     assert!(hp.unwrap() != "");
-    // }
-
-    // #[test]
-    // fn hash_pw_sha1_fail() {
-    //     let hp = hash_password_sha1("");
-    //     assert!(hp.unwrap() != "");
-    // }
-
-    // #[test]
-    // fn validate_pw() {
-    //     let hp = hash_password("12456hhhhh");
-    //     let vd = validate_password("12456hhhhh", &hp.unwrap());
-    //     assert!(vd == true);
-    // }
-
-    // #[test]
-    // fn validate_pw_sha1() {
-    //     let hp = hash_password_sha1("12456hhhhh");
-    //     let vd = validate_password_sha1("12456hhhhh", &hp.unwrap());
-    //     assert!(vd == true);
-    // }
 
     #[test]
     fn hash_pw_arg() {
