@@ -12,6 +12,7 @@ use ccount_service::daily_calories::get_calories_for_day;
 
 mod tests {
     use super::*;
+    use ccount_service::daily_calories::get_calories_list_for_day;
 
     #[test]
     fn new_calories() {
@@ -42,10 +43,14 @@ mod tests {
         assert_eq!(ncal2.day, "01-24-2021");
 
         let user_slice: &str = uemail;
+        let callst = get_calories_list_for_day(&ncon.get().unwrap(), user_slice, "01-24-2021");
+        assert_eq!(callst.len(), 2);
+
+        let user_slice: &str = uemail;
         let caltot = get_calories_for_day(&ncon.get().unwrap(), user_slice, "01-24-2021");
         assert_eq!(caltot, 808);
 
-        let cnt2 = delete_existing_daily_calory(&ncon.get().unwrap(), ncal2.id);
+        let cnt2 = delete_existing_daily_calory(&ncon.get().unwrap(), ncal2.id, user_slice);
         assert!(cnt2.unwrap() == 1);
 
         let user_slice: &str = uemail;

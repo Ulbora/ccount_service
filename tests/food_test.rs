@@ -51,7 +51,7 @@ mod tests {
         let flst = get_food_list_by_category(&ncon.get().unwrap(), cat.id, user_slice);
         assert!(flst.len() == 2);
 
-        let cnt = delete_existing_food(&ncon.get().unwrap(), fd.id);
+        let cnt = delete_existing_food(&ncon.get().unwrap(), fd.id, uemail);
         assert!(cnt.unwrap() == 1);
 
         let cnt = delete_category(&ncon.get().unwrap(), cat.id);

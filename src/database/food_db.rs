@@ -75,9 +75,13 @@ pub fn get_food_by_id(conn: &MysqlConnection, fid: i64) -> Food {
     data
 }
 
-pub fn delete_food(conn: &MysqlConnection, fid: i64) -> Result<usize, Box<dyn Error>> {
+pub fn delete_food(
+    conn: &MysqlConnection,
+    fid: i64,
+    uemail: &str,
+) -> Result<usize, Box<dyn Error>> {
     use crate::diesel::query_dsl::filter_dsl::FilterDsl;
-    let num_deleted = diesel::delete(food.filter(id.eq(fid)))
+    let num_deleted = diesel::delete(food.filter(id.eq(fid)).filter(user_email.eq(uemail)))
         .execute(conn)
         .expect("Error deleting cat");
 

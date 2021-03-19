@@ -19,6 +19,15 @@ pub fn create_new_daily_calories(
     rtn
 }
 
+pub fn get_calories_list_for_day(
+    conn: &MysqlConnection,
+    uemail: &str,
+    dday: &str,
+) -> Vec<DailyCalories> {
+    let dcl = get_daily_calories(conn, uemail, dday);
+    dcl
+}
+
 pub fn get_calories_for_day(conn: &MysqlConnection, uemail: &str, dday: &str) -> i32 {
     let mut rtn = 0;
     let dcl = get_daily_calories(conn, uemail, dday);
@@ -32,7 +41,8 @@ pub fn get_calories_for_day(conn: &MysqlConnection, uemail: &str, dday: &str) ->
 pub fn delete_existing_daily_calory(
     conn: &MysqlConnection,
     dcid: i64,
+    uemail: &str,
 ) -> Result<usize, Box<dyn Error>> {
-    let rtn = delete_daily_calories(conn, dcid);
+    let rtn = delete_daily_calories(conn, dcid, uemail);
     rtn
 }

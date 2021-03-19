@@ -1,11 +1,16 @@
 extern crate actix_cors;
 use crate::routes::change_pw;
+use crate::routes::delete_calories;
+use crate::routes::delete_food;
 use crate::routes::echo;
+use crate::routes::get_calories_by_day;
+use crate::routes::get_calory_list_by_day;
 use crate::routes::get_cat_list;
 use crate::routes::get_food_list_by_cat;
 use crate::routes::hello;
 use crate::routes::login;
 use crate::routes::manual_hello;
+use crate::routes::new_calories;
 use crate::routes::new_food;
 use crate::routes::new_user;
 use crate::routes::update_food;
@@ -47,6 +52,11 @@ async fn main() -> std::io::Result<()> {
             .service(new_food)
             .service(update_food)
             .service(get_food_list_by_cat)
+            .service(delete_food)
+            .service(new_calories)
+            .service(get_calory_list_by_day)
+            .service(get_calories_by_day)
+            .service(delete_calories)
             .data(pool.clone())
             // .route("/user/new", web::get().to(new_user))
             //.service(web::resource("/user/new").route(web::post().to_async(new_user)))

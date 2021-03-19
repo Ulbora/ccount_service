@@ -44,7 +44,7 @@ mod tests {
         let ff = get_food_by_id(&ncon, nfd.id);
         assert!(ff.id == nfd.id);
 
-        let cnt = delete_food(&ncon, nfd.id);
+        let cnt = delete_food(&ncon, nfd.id, uemail);
         assert!(cnt.unwrap() == 1);
 
         let cnt = delete_category(&ncon, ncat.id);

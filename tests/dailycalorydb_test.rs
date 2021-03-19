@@ -61,10 +61,10 @@ mod tests {
         let dcs = get_daily_calories(&ncon, user_slice, "03-24-2021");
         assert!(dcs.len() == 2);
 
-        let cnt = delete_daily_calories(&ncon, ncal3.id);
+        let cnt = delete_daily_calories(&ncon, ncal3.id, user_slice);
         assert!(cnt.unwrap() == 1);
 
-        let cnt2 = delete_daily_calories(&ncon, ncal4.id);
+        let cnt2 = delete_daily_calories(&ncon, ncal4.id, user_slice);
         assert!(cnt2.unwrap() == 1);
 
         let dcs2 = get_daily_calories(&ncon, user_slice, "03-24-2021");

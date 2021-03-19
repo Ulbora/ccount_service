@@ -44,11 +44,19 @@ pub fn get_daily_calories(conn: &MysqlConnection, uemail: &str, dday: &str) -> V
     data
 }
 
-pub fn delete_daily_calories(conn: &MysqlConnection, dcid: i64) -> Result<usize, Box<dyn Error>> {
+pub fn delete_daily_calories(
+    conn: &MysqlConnection,
+    dcid: i64,
+    uemail: &str,
+) -> Result<usize, Box<dyn Error>> {
     use crate::diesel::query_dsl::filter_dsl::FilterDsl;
-    let num_deleted = diesel::delete(daily_calories.filter(id.eq(dcid)))
-        .execute(conn)
-        .expect("Error deleting cat");
+    let num_deleted = diesel::delete(
+        daily_calories
+            .filter(id.eq(dcid))
+            .filter(user_email.eq(uemail)),
+    )
+    .execute(conn)
+    .expect("Error deleting cat");
 
     //println!("Deleted {} posts", num_deleted);
     Ok(num_deleted)

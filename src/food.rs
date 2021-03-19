@@ -36,7 +36,11 @@ pub fn get_food_list_by_category(conn: &MysqlConnection, cid: i64, uemail: &str)
     flst
 }
 
-pub fn delete_existing_food(conn: &MysqlConnection, fid: i64) -> Result<usize, Box<dyn Error>> {
-    let rtn = delete_food(conn, fid);
+pub fn delete_existing_food(
+    conn: &MysqlConnection,
+    fid: i64,
+    uemail: &str,
+) -> Result<usize, Box<dyn Error>> {
+    let rtn = delete_food(conn, fid, uemail);
     rtn
 }
