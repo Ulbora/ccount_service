@@ -27,7 +27,7 @@ pub fn create_category(conn: &MysqlConnection, name: &str) -> Category {
 pub fn update_category(conn: &MysqlConnection, cid: i64, nm: &str) -> Category {
     use crate::diesel::query_dsl::filter_dsl::FindDsl;
 
-    use schema::category::dsl::{id, name};
+    use schema::category::dsl::name;
 
     diesel::update(category.find(cid))
         .set(name.eq(nm))

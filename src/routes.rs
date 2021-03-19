@@ -1,6 +1,4 @@
-use actix_web::{
-    delete, get, post, put, web, App, HttpRequest, HttpResponse, HttpServer, Responder,
-};
+use actix_web::{delete, get, post, put, web, HttpRequest, HttpResponse, Responder};
 use ccount_service::category::get_category_list;
 use ccount_service::daily_calories::create_new_daily_calories;
 use ccount_service::daily_calories::delete_existing_daily_calory;
@@ -21,28 +19,12 @@ use serde::Deserialize;
 use serde::Serialize;
 extern crate base64;
 
-use base64::decode;
 use std::env;
-
-#[get("/")]
-async fn hello() -> impl Responder {
-    HttpResponse::Ok().body("Hello calorie counting world!")
-}
-
-#[post("/echo")]
-async fn echo(req_body: String) -> impl Responder {
-    HttpResponse::Ok().body(req_body)
-}
-
-pub async fn manual_hello() -> impl Responder {
-    HttpResponse::Ok().body("Hey there!")
-}
 
 #[derive(Deserialize)]
 struct User {
     email: String,
     password: String,
-    // new_password: String,
 }
 
 #[derive(Deserialize)]
@@ -114,7 +96,7 @@ async fn new_user(
     let mut suc = false;
     let auth_suc = validate_api_key(req);
 
-    println!("authed: {:?}", auth_suc);
+    //println!("authed: {:?}", auth_suc);
     if auth_suc {
         suc = add_new_user(&pool.get().unwrap(), &req_body.email, &req_body.password);
     }
@@ -142,7 +124,7 @@ async fn change_pw(
 ) -> impl Responder {
     let mut suc = false;
     let auth_suc = validate_auth(req, &req_body.email, &pool.get().unwrap());
-    println!("authed: {:?}", auth_suc);
+    //println!("authed: {:?}", auth_suc);
     if auth_suc {
         suc = change_password(
             &pool.get().unwrap(),
@@ -196,7 +178,6 @@ fn validate_auth(req: HttpRequest, email: &str, conn: &MysqlConnection) -> bool 
             let decred = &base64::decode(creds);
             match decred {
                 Ok(c) => {
-                    // let bytes = &base64::decode(creds).unwrap()[..];
                     let bytes = &c[..];
                     let astr = std::str::from_utf8(bytes).unwrap();
                     let creds: Vec<&str> = astr.split(':').collect();
@@ -232,17 +213,8 @@ fn validate_api_key(req: HttpRequest) -> bool {
     rtn
 }
 
-// #[derive(Serialize)]
-// struct Category {
-//     pub id: i64,
-//     pub name: String,
-// }
-
 #[get("/category/list")]
-async fn get_cat_list(
-    pool: web::Data<Pool<ConnectionManager<MysqlConnection>>>,
-    //req: HttpRequest,
-) -> impl Responder {
+async fn get_cat_list(pool: web::Data<Pool<ConnectionManager<MysqlConnection>>>) -> impl Responder {
     let mut rtn: Vec<Category> = Vec::new();
     let lst = get_category_list(&pool.get().unwrap());
     for c in lst {
@@ -257,25 +229,6 @@ async fn get_cat_list(
         .json(rtn)
 }
 
-// #[derive(Deserialize, Serialize)]
-// #[serde(rename_all = "camelCase")]
-// struct Food {
-//     id: i64,
-//     name: String,
-//     calories: i32,
-//     user_email: String,
-//     category_id: i64,
-// }
-
-// #[derive(Deserialize)]
-// #[serde(rename_all = "camelCase")]
-// struct NewFood {
-//     name: String,
-//     calories: i32,
-//     user_email: String,
-//     category_id: i64,
-// }
-
 #[post("/food/new")]
 async fn new_food(
     req_body: web::Json<NewFood>,
@@ -285,7 +238,7 @@ async fn new_food(
     let mut suc = false;
     let auth_suc = validate_auth(req, &req_body.user_email, &pool.get().unwrap());
 
-    println!("authed: {:?}", auth_suc);
+    //println!("authed: {:?}", auth_suc);
     if auth_suc {
         let fd = create_new_food(
             &pool.get().unwrap(),
@@ -323,7 +276,7 @@ async fn update_food(
     let mut suc = false;
     let auth_suc = validate_auth(req, &req_body.user_email, &pool.get().unwrap());
 
-    println!("authed: {:?}", auth_suc);
+    //println!("authed: {:?}", auth_suc);
     if auth_suc {
         let fd = update_existing_food(
             &pool.get().unwrap(),
@@ -416,23 +369,6 @@ async fn delete_food(
     }
 }
 
-// #[derive(Deserialize)]
-// #[serde(rename_all = "camelCase")]
-// struct NewDailyCalories {
-//     day: String,
-//     user_email: String,
-//     food_id: i64,
-// }
-
-// #[derive(Deserialize, Serialize)]
-// #[serde(rename_all = "camelCase")]
-// struct DailyCalories {
-//     id: i64,
-//     day: String,
-//     user_email: String,
-//     food_id: i64,
-// }
-
 #[post("/calories/new")]
 async fn new_calories(
     req_body: web::Json<NewDailyCalories>,
@@ -442,7 +378,7 @@ async fn new_calories(
     let mut suc = false;
     let auth_suc = validate_auth(req, &req_body.user_email, &pool.get().unwrap());
 
-    println!("authed: {:?}", auth_suc);
+    //println!("authed: {:?}", auth_suc);
     if auth_suc {
         let fd = create_new_daily_calories(
             &pool.get().unwrap(),
@@ -507,7 +443,6 @@ async fn get_calories_by_day(
     req: HttpRequest,
     web::Path((email, day)): web::Path<(String, String)>,
 ) -> impl Responder {
-    // let mut rtn: Vec<DailyCalories> = Vec::new();
     let auth_suc = validate_auth(req, &email, &pool.get().unwrap());
     let mut cnt = 0;
     if auth_suc {

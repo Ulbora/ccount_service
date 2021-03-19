@@ -2,7 +2,6 @@ use crate::database::user_db::create_user;
 use crate::database::user_db::get_user;
 use crate::database::user_db::update_user;
 use crate::MysqlConnection;
-use crate::User;
 
 extern crate argon2;
 use argon2::Config;

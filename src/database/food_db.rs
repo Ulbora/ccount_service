@@ -38,7 +38,7 @@ pub fn update_food(
 ) -> Food {
     use crate::diesel::query_dsl::filter_dsl::FindDsl;
 
-    use schema::food::dsl::{calories, id, name};
+    use schema::food::dsl::{calories, name};
 
     diesel::update(food.find(fid))
         .set((name.eq(nm), calories.eq(cals)))

@@ -1,12 +1,11 @@
 use crate::diesel;
 use std::error::Error;
 
-use crate::diesel::query_dsl::methods::OrderDsl;
 use crate::diesel::ExpressionMethods;
 use crate::diesel::RunQueryDsl;
 use crate::schema;
 use crate::schema::user::dsl::user;
-//use crate::schema::user::email;
+
 use crate::MysqlConnection;
 use crate::User;
 
@@ -17,20 +16,12 @@ pub fn create_user(conn: &MysqlConnection, eemail: &str, password: &str) -> bool
 
     let new_user = User { email, password };
 
-    //use schema::user::dsl::{email, user};
-
     let cnt = diesel::insert_into(user).values(&new_user).execute(conn);
-    //.expect("Error saving new user");
 
-    let email = String::from(eemail);
-    let password = String::from("");
-
-    //let rtn = User { email, password };
     match cnt {
         Ok(_) => rtn = true,
-        Err(_) => rtn = false,
+        Err(_) => {}
     }
-    //assert_eq!(1, cnt);
     rtn
 }
 

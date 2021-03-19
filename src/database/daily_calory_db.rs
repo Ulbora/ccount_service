@@ -36,7 +36,6 @@ pub fn get_daily_calories(conn: &MysqlConnection, uemail: &str, dday: &str) -> V
     use crate::diesel::query_dsl::filter_dsl::FilterDsl;
     use schema::daily_calories::dsl::day;
     let data = daily_calories
-        //.filter(user_email.eq(uemail).and(day.eq(dday)))
         .filter(user_email.eq(uemail))
         .filter(day.eq(dday))
         .load::<DailyCalories>(conn)
