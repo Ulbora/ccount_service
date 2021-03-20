@@ -199,7 +199,7 @@ fn validate_auth(req: HttpRequest, email: &str, conn: &MysqlConnection) -> bool 
 
 fn validate_api_key(req: HttpRequest) -> bool {
     let rtn = false;
-    let api_key = env::var("api-key").unwrap_or("ddjdt373dcf7dhdh222282727fffeee".to_string());
+    let api_key = env::var("API_KEY").unwrap_or("ddjdt373dcf7dhdh222282727fffeee".to_string());
     let key_h = req.headers().get("api-key");
     match key_h {
         Some(k) => {
