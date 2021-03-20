@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS `ccount`.`user` (
   `email` VARCHAR(75) NOT NULL,
   `password` VARCHAR(250) NOT NULL,
   PRIMARY KEY (`email`),
-  UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE)
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC) )
 ENGINE = InnoDB;
 
 
@@ -48,8 +48,8 @@ CREATE TABLE IF NOT EXISTS `ccount`.`food` (
   `category_id` BIGINT NOT NULL,
   `user_email` VARCHAR(75) NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_food_category1_idx` (`category_id` ASC) VISIBLE,
-  INDEX `fk_food_user1_idx` (`user_email` ASC) VISIBLE,
+  INDEX `fk_food_category1_idx` (`category_id` ASC) ,
+  INDEX `fk_food_user1_idx` (`user_email` ASC) ,
   CONSTRAINT `fk_food_category1`
     FOREIGN KEY (`category_id`)
     REFERENCES `ccount`.`category` (`id`)
@@ -72,8 +72,8 @@ CREATE TABLE IF NOT EXISTS `ccount`.`daily_calories` (
   `user_email` VARCHAR(75) NOT NULL,
   `food_id` BIGINT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_daily_calories_user_idx` (`user_email` ASC) VISIBLE,
-  INDEX `fk_daily_calories_food1_idx` (`food_id` ASC) VISIBLE,
+  INDEX `fk_daily_calories_user_idx` (`user_email` ASC) ,
+  INDEX `fk_daily_calories_food1_idx` (`food_id` ASC) ,
   CONSTRAINT `fk_daily_calories_user`
     FOREIGN KEY (`user_email`)
     REFERENCES `ccount`.`user` (`email`)

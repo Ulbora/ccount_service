@@ -25,7 +25,7 @@ mod routes;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    println!("Server is running on port: 8080");
+    println!("Server is running on port: 3000");
     let pool = establish_pooled_connection();
     HttpServer::new(move || {
         App::new()
@@ -54,7 +54,7 @@ async fn main() -> std::io::Result<()> {
             .service(delete_calories)
             .data(pool.clone())
     })
-    .bind("0.0.0.0:8080")?
+    .bind("0.0.0.0:3000")?
     .run()
     .await
 }

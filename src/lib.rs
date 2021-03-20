@@ -33,6 +33,6 @@ pub fn establish_pooled_connection() -> Pool<ConnectionManager<MysqlConnection>>
     let manager = ConnectionManager::<MysqlConnection>::new(database_url);
     let pool = r2d2::Pool::builder()
         .build(manager)
-        .expect("Failed to create postgres pool.");
+        .expect("Failed to create MySql pool.");
     pool
 }
