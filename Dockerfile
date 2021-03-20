@@ -4,7 +4,7 @@ FROM ubuntu
 RUN apt-get update
 RUN apt-get install -y ca-certificates
 # RUN apt-get install libmysqlclient20
-RUN apt-get install libmysqlclient21
+RUN apt-get install libmysqlclient21 -y
 # RUN apt-get install libgcc-s1
 RUN apt-get install libpthread-stubs0-dev
 # RUN apt-get install libc6 libc6-dev
