@@ -31,12 +31,15 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .wrap(
                 Cors::default()
-                    //.allowed_origin("http://127.0.0.1:3000")
-                    //.allowed_origin("http://localhost:3000")
+                    .allowed_origin("http://localhost:8080")
                     .send_wildcard()
-                    .allowed_methods(vec!["GET", "POST", "PUT", "DELETE"])
-                    .allowed_headers(vec![http::header::AUTHORIZATION, http::header::ACCEPT])
-                    .allowed_header(http::header::CONTENT_TYPE)
+                    .allowed_methods(vec!["GET", "POST", "PUT", "DELETE", "OPTIONS"])
+                    .allowed_headers(vec![
+                        http::header::AUTHORIZATION,
+                        http::header::ACCEPT,
+                        http::header::CONTENT_TYPE,
+                    ])
+                    // .allowed_header(http::header::CONTENT_TYPE)
                     .allowed_header("api-key")
                     .max_age(3600),
             )
