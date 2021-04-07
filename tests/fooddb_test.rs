@@ -10,6 +10,7 @@ use ccount_service::establish_connection;
 // #[cfg(test)]
 mod tests {
     use super::*;
+    use ccount_service::database::food_db::get_food_by_user;
     use ccount_service::database::user_db::create_user;
     use ccount_service::database::user_db::delete_user;
 
@@ -39,6 +40,9 @@ mod tests {
 
         let user_slice: &str = uemail;
         let fds = get_food_by_category(&ncon, ncat.id, user_slice);
+        assert!(fds.len() == 2);
+
+        let fds = get_food_by_user(&ncon, user_slice);
         assert!(fds.len() == 2);
 
         let ff = get_food_by_id(&ncon, nfd.id);

@@ -7,6 +7,7 @@ use ccount_service::daily_calories::get_calories_list_for_day;
 use ccount_service::food::create_new_food;
 use ccount_service::food::delete_existing_food;
 use ccount_service::food::get_food_list_by_category;
+use ccount_service::food::get_food_list_by_user;
 use ccount_service::food::update_existing_food;
 use ccount_service::user::add_new_user;
 use ccount_service::user::change_password;
@@ -316,6 +317,38 @@ async fn get_food_list_by_cat(
     let auth_suc = validate_auth(req, &email, &pool.get().unwrap());
     if auth_suc {
         let lst = get_food_list_by_category(&pool.get().unwrap(), cid, &email);
+        for f in lst {
+            let ff = Food {
+                id: f.id,
+                name: f.name,
+                category_id: f.category_id,
+                calories: f.calories,
+                user_email: f.user_email,
+            };
+            rtn.push(ff);
+        }
+    }
+    if auth_suc {
+        HttpResponse::Ok()
+            .content_type("application/json")
+            .json(rtn)
+    } else {
+        HttpResponse::Unauthorized()
+            .content_type("application/json")
+            .json(rtn)
+    }
+}
+
+#[get("/food/list/{email}")]
+async fn get_food_list_by_users(
+    pool: web::Data<Pool<ConnectionManager<MysqlConnection>>>,
+    req: HttpRequest,
+    web::Path(email): web::Path<String>,
+) -> impl Responder {
+    let mut rtn: Vec<Food> = Vec::new();
+    let auth_suc = validate_auth(req, &email, &pool.get().unwrap());
+    if auth_suc {
+        let lst = get_food_list_by_user(&pool.get().unwrap(), &email);
         for f in lst {
             let ff = Food {
                 id: f.id,

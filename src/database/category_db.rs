@@ -1,6 +1,7 @@
 //use self::models::{Category, DailyCalories, Food, NewCategory, User};
 
 use crate::diesel;
+
 use std::error::Error;
 
 use crate::diesel::query_dsl::methods::OrderDsl;
@@ -44,7 +45,11 @@ pub fn update_category(conn: &MysqlConnection, cid: i64, nm: &str) -> Category {
 }
 
 pub fn get_categories(conn: &MysqlConnection) -> Vec<Category> {
-    let results = category.load::<Category>(conn).expect("Error loading cats");
+    use crate::schema::category::name;
+    let results = category
+        .order(name)
+        .load::<Category>(conn)
+        .expect("Error loading cats");
     results
 }
 

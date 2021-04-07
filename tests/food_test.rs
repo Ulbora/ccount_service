@@ -11,6 +11,7 @@ use ccount_service::database::user_db::delete_user;
 
 mod tests {
     use super::*;
+    use ccount_service::food::get_food_list_by_user;
 
     #[test]
     fn new_food() {
@@ -49,6 +50,9 @@ mod tests {
 
         let user_slice: &str = uemail;
         let flst = get_food_list_by_category(&ncon.get().unwrap(), cat.id, user_slice);
+        assert!(flst.len() == 2);
+
+        let flst = get_food_list_by_user(&ncon.get().unwrap(), user_slice);
         assert!(flst.len() == 2);
 
         let cnt = delete_existing_food(&ncon.get().unwrap(), fd.id, uemail);

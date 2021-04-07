@@ -60,10 +60,24 @@ pub fn update_food(
 
 pub fn get_food_by_category(conn: &MysqlConnection, cid: i64, uemail: &str) -> Vec<Food> {
     use crate::diesel::query_dsl::filter_dsl::FilterDsl;
+    use crate::schema::food::name;
     use schema::food::dsl::category_id;
     let data = food
         .filter(category_id.eq(cid))
         .filter(user_email.eq(uemail))
+        .order(name)
+        .load::<Food>(conn)
+        .expect("Error loading cats");
+    data
+}
+
+pub fn get_food_by_user(conn: &MysqlConnection, uemail: &str) -> Vec<Food> {
+    use crate::diesel::query_dsl::filter_dsl::FilterDsl;
+    use crate::schema::food::name;
+
+    let data = food
+        .filter(user_email.eq(uemail))
+        .order(name)
         .load::<Food>(conn)
         .expect("Error loading cats");
     data

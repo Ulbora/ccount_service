@@ -1,6 +1,7 @@
 use crate::database::food_db::create_food;
 use crate::database::food_db::delete_food;
 use crate::database::food_db::get_food_by_category;
+use crate::database::food_db::get_food_by_user;
 use crate::database::food_db::update_food;
 use std::error::Error;
 
@@ -33,6 +34,11 @@ pub fn update_existing_food(
 
 pub fn get_food_list_by_category(conn: &MysqlConnection, cid: i64, uemail: &str) -> Vec<Food> {
     let flst = get_food_by_category(conn, cid, uemail);
+    flst
+}
+
+pub fn get_food_list_by_user(conn: &MysqlConnection, uemail: &str) -> Vec<Food> {
+    let flst = get_food_by_user(conn, uemail);
     flst
 }
 

@@ -2,6 +2,7 @@ extern crate actix_cors;
 use crate::routes::change_pw;
 use crate::routes::delete_calories;
 use crate::routes::delete_food;
+use crate::routes::get_food_list_by_users;
 
 use crate::routes::get_calories_by_day;
 use crate::routes::get_calory_list_by_day;
@@ -50,6 +51,7 @@ async fn main() -> std::io::Result<()> {
             .service(new_food)
             .service(update_food)
             .service(get_food_list_by_cat)
+            .service(get_food_list_by_users)
             .service(delete_food)
             .service(new_calories)
             .service(get_calory_list_by_day)
