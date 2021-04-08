@@ -3,7 +3,9 @@ use ccount_service::category::get_category_list;
 use ccount_service::daily_calories::create_new_daily_calories;
 use ccount_service::daily_calories::delete_existing_daily_calory;
 use ccount_service::daily_calories::get_calories_for_day;
+use ccount_service::daily_calories::get_calories_for_multi_days;
 use ccount_service::daily_calories::get_calories_list_for_day;
+
 use ccount_service::food::create_new_food;
 use ccount_service::food::delete_existing_food;
 use ccount_service::food::get_food_list_by_category;
@@ -86,6 +88,12 @@ struct NewFood {
     calories: i32,
     user_email: String,
     category_id: i64,
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct CaloryCount {
+    pub calories: i32,
+    pub day: String,
 }
 
 #[post("/user/new")]
@@ -482,6 +490,37 @@ async fn get_calories_by_day(
         cnt = get_calories_for_day(&pool.get().unwrap(), &email, &day);
     }
     let rtn = CountResp { calories: cnt };
+    if auth_suc {
+        HttpResponse::Ok()
+            .content_type("application/json")
+            .json(rtn)
+    } else {
+        HttpResponse::Unauthorized()
+            .content_type("application/json")
+            .json(rtn)
+    }
+}
+
+#[get("/calories/days/{email}/{count}")]
+async fn get_calories_for_days(
+    pool: web::Data<Pool<ConnectionManager<MysqlConnection>>>,
+    req: HttpRequest,
+    web::Path((email, count)): web::Path<(String, i64)>,
+) -> impl Responder {
+    let mut rtn: Vec<CaloryCount> = Vec::new();
+    let auth_suc = validate_auth(req, &email, &pool.get().unwrap());
+    //let mut cnt = 0;
+    if auth_suc {
+        let cnt_list = get_calories_for_multi_days(&pool.get().unwrap(), &email, count);
+        for cc in cnt_list {
+            let ncc = CaloryCount {
+                day: cc.day,
+                calories: cc.calories,
+            };
+            rtn.push(ncc);
+        }
+    }
+    //let rtn = CountResp { calories: cnt };
     if auth_suc {
         HttpResponse::Ok()
             .content_type("application/json")

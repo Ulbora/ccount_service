@@ -32,17 +32,23 @@ pub fn create_daily_calories(
     daily_calories.order(id.desc()).first(conn).unwrap()
 }
 
-// pub fn get_daily_calories(conn: &MysqlConnection, uemail: &str, dday: &str) -> Vec<DailyCalories> {
-//     use crate::diesel::query_dsl::filter_dsl::FilterDsl;
-//     use schema::daily_calories::dsl::day;
-//     let data = daily_calories
-//         .filter(user_email.eq(uemail))
-//         .filter(day.eq(dday))
-//         .order(day)
-//         .load::<DailyCalories>(conn)
-//         .expect("Error loading cats");
-//     data
-// }
+pub fn get_day_list(conn: &MysqlConnection, uemail: &str, days: i64) -> Vec<String> {
+    use crate::diesel::QueryDsl;
+    use schema::daily_calories::dsl::day;
+    let data = diesel::query_dsl::methods::OrderDsl::order(
+        diesel::query_dsl::methods::OrderDsl::order(
+            diesel::query_dsl::filter_dsl::FilterDsl::filter(daily_calories, user_email.eq(uemail)),
+            day,
+        )
+        .select(day)
+        .limit(days)
+        .distinct(),
+        day.desc(),
+    )
+    .load::<String>(conn)
+    .expect("Error loading cats");
+    data
+}
 
 pub fn get_daily_calories(conn: &MysqlConnection, uemail: &str, dday: &str) -> Vec<DailyCalories> {
     use crate::diesel::QueryDsl;

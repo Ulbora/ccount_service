@@ -9,7 +9,7 @@ use ccount_service::database::user_db::delete_user;
 use ccount_service::daily_calories::create_new_daily_calories;
 use ccount_service::daily_calories::delete_existing_daily_calory;
 use ccount_service::daily_calories::get_calories_for_day;
-
+use ccount_service::daily_calories::get_calories_for_multi_days;
 mod tests {
     use super::*;
     use ccount_service::daily_calories::get_calories_list_for_day;
@@ -49,6 +49,10 @@ mod tests {
         let user_slice: &str = uemail;
         let caltot = get_calories_for_day(&ncon.get().unwrap(), user_slice, "01-24-2021");
         assert_eq!(caltot, 808);
+
+        let user_slice: &str = uemail;
+        let caltot = get_calories_for_multi_days(&ncon.get().unwrap(), user_slice, 2);
+        assert_eq!(caltot[0].calories, 808);
 
         let cnt2 = delete_existing_daily_calory(&ncon.get().unwrap(), ncal2.id, user_slice);
         assert!(cnt2.unwrap() == 1);

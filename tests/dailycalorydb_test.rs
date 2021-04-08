@@ -15,6 +15,7 @@ use ccount_service::establish_connection;
 // #[cfg(test)]
 mod tests {
     use super::*;
+    use ccount_service::database::daily_calory_db::get_day_list;
 
     #[test]
     fn new_daily_cal() {
@@ -60,6 +61,15 @@ mod tests {
 
         let dcs = get_daily_calories(&ncon, user_slice, "03-24-2021");
         assert!(dcs.len() == 2);
+
+        let dcs = get_day_list(&ncon, user_slice, 2);
+        assert!(dcs.len() == 2);
+
+        let dcs = get_day_list(&ncon, user_slice, 3);
+        assert!(dcs.len() == 3);
+
+        let dcs = get_day_list(&ncon, user_slice, 10);
+        assert!(dcs.len() == 3);
 
         let cnt = delete_daily_calories(&ncon, ncal3.id, user_slice);
         assert!(cnt.unwrap() == 1);
