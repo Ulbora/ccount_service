@@ -34,6 +34,9 @@ async fn main() -> std::io::Result<()> {
             .wrap(
                 Cors::default()
                     .allowed_origin("http://localhost:8080")
+                    .allowed_origin("http://104.131.184.80:8094")
+                    .allowed_origin("http://ccountpwa.cocka2notes.com")
+                    .allowed_origin("http://www.ccountpwa.cocka2notes.com")
                     .send_wildcard()
                     .allowed_methods(vec!["GET", "POST", "PUT", "DELETE", "OPTIONS"])
                     .allowed_headers(vec![
