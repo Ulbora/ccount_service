@@ -4,6 +4,7 @@ use crate::routes::delete_calories;
 use crate::routes::delete_food;
 use crate::routes::get_calories_for_days;
 use crate::routes::get_food_list_by_users;
+use crate::routes::is_alive;
 
 use crate::routes::get_calories_by_day;
 use crate::routes::get_calory_list_by_day;
@@ -48,6 +49,7 @@ async fn main() -> std::io::Result<()> {
                     .allowed_header("api-key")
                     .max_age(3600),
             )
+            .service(is_alive)
             .service(new_user)
             .service(login)
             .service(change_pw)

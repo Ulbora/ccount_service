@@ -562,3 +562,11 @@ async fn delete_calories(
             .json(res)
     }
 }
+
+#[get("/alive")]
+async fn is_alive() -> impl Responder {
+    let rtn = Resp { success: true };
+    HttpResponse::Ok()
+        .content_type("application/json")
+        .json(rtn)
+}
