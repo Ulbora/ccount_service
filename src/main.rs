@@ -38,16 +38,26 @@ async fn main() -> std::io::Result<()> {
                     .allowed_origin("http://104.131.184.80:8094")
                     .allowed_origin("http://ccountpwa.cocka2notes.com")
                     .allowed_origin("http://www.ccountpwa.cocka2notes.com")
-                    .send_wildcard()
+                    //.send_wildcard()
                     .allowed_methods(vec!["GET", "POST", "PUT", "DELETE", "OPTIONS"])
                     .allowed_headers(vec![
-                        http::header::AUTHORIZATION,
-                        http::header::ACCEPT,
-                        http::header::CONTENT_TYPE,
+                        "X-Requested-With",
+                        "authorization",
+                        "accept",
+                        "Content-Type",
+                        "Origin",
+                        "api-key",
                     ])
-                    // .allowed_header(http::header::CONTENT_TYPE)
-                    .allowed_header("api-key")
-                    .max_age(3600),
+                    // .allowed_headers(vec![
+                    //     http::header::AUTHORIZATION,
+                    //     http::header::ACCEPT,
+                    //     http::header::CONTENT_TYPE,
+                    //     http::header::ACCESS_CONTROL_ALLOW_HEADERS,
+                    //     http::header::ACCESS_CONTROL_REQUEST_HEADERS
+                    // ])
+                    // // .allowed_header(http::header::CONTENT_TYPE)
+                    // .allowed_header("api-key")
+                    .max_age(300),
             )
             .service(is_alive)
             .service(new_user)
