@@ -113,7 +113,7 @@ pub fn calories_for_multi_days(
     //println!("get_calories_for_multi_days");
 
     let data = diesel::sql_query(
-        "select sum(f.calories) as total, dc.day from food f inner join daily_calories dc  on dc.food_id = f.id where dc.user_email = ? group by dc.day order by dc.day limit ? ")
+        "select sum(f.calories) as total, dc.day from food f inner join daily_calories dc  on dc.food_id = f.id where dc.user_email = ? group by dc.day order by dc.day desc limit ? ")
         .bind::<Text, _>(uemail)
         .bind::<Integer, _>(days)
         .load::<CaloryCount>(conn).expect("Error loading cats");
