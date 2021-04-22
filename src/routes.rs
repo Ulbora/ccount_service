@@ -505,7 +505,7 @@ async fn get_calories_by_day(
 async fn get_calories_for_days(
     pool: web::Data<Pool<ConnectionManager<MysqlConnection>>>,
     req: HttpRequest,
-    web::Path((email, count)): web::Path<(String, i64)>,
+    web::Path((email, count)): web::Path<(String, i32)>,
 ) -> impl Responder {
     let mut rtn: Vec<CaloryCount> = Vec::new();
     let auth_suc = validate_auth(req, &email, &pool.get().unwrap());
@@ -520,7 +520,6 @@ async fn get_calories_for_days(
             rtn.push(ncc);
         }
     }
-    //let rtn = CountResp { calories: cnt };
     if auth_suc {
         HttpResponse::Ok()
             .content_type("application/json")

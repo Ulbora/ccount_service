@@ -1,5 +1,10 @@
 use crate::diesel;
 use crate::schema::daily_calories::user_email;
+use diesel::sql_types::Integer;
+use diesel::sql_types::Text;
+
+use diesel::types::Varchar;
+
 use std::error::Error;
 
 use crate::diesel::query_dsl::methods::OrderDsl;
@@ -91,3 +96,35 @@ pub fn delete_daily_calories(
     //println!("Deleted {} posts", num_deleted);
     Ok(num_deleted)
 }
+
+#[derive(QueryableByName, Debug)]
+pub struct CaloryCount {
+    #[sql_type = "Varchar"]
+    pub total: String,
+    #[sql_type = "Varchar"]
+    pub day: String,
+}
+
+pub fn calories_for_multi_days(
+    conn: &MysqlConnection,
+    uemail: &str,
+    days: i32,
+) -> Vec<CaloryCount> {
+    //println!("get_calories_for_multi_days");
+
+    let data = diesel::sql_query(
+        "select sum(f.calories) as total, dc.day from food f inner join daily_calories dc  on dc.food_id = f.id where dc.user_email = ? group by dc.day order by dc.day limit ? ")
+        .bind::<Text, _>(uemail)
+        .bind::<Integer, _>(days)
+        .load::<CaloryCount>(conn).expect("Error loading cats");
+    // println!("q res: {:?}", &data);
+    data
+}
+
+// select sum(f.calories), dc.day
+// from food f
+// inner join daily_calories dc
+// on dc.food_id = f.id
+// where dc.user_email = 'ken21@ken.com'
+// group by dc.day
+// order by dc.day

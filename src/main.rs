@@ -18,7 +18,7 @@ use crate::routes::new_food;
 use crate::routes::new_user;
 use crate::routes::update_food;
 
-use actix_web::{http, App, HttpServer};
+use actix_web::{App, HttpServer};
 
 use actix_cors::Cors;
 

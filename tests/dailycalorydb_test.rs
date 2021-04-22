@@ -15,6 +15,7 @@ use ccount_service::establish_connection;
 // #[cfg(test)]
 mod tests {
     use super::*;
+    use ccount_service::database::daily_calory_db::calories_for_multi_days;
     use ccount_service::database::daily_calory_db::get_day_list;
 
     #[test]
@@ -69,6 +70,9 @@ mod tests {
         assert!(dcs.len() == 3);
 
         let dcs = get_day_list(&ncon, user_slice, 10);
+        assert!(dcs.len() == 3);
+
+        let dcs = calories_for_multi_days(&ncon, user_slice, 20);
         assert!(dcs.len() == 3);
 
         let cnt = delete_daily_calories(&ncon, ncal3.id, user_slice);
